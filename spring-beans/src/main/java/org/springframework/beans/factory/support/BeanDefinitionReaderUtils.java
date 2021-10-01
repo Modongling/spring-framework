@@ -56,14 +56,16 @@ public abstract class BeanDefinitionReaderUtils {
 	 */
 	public static AbstractBeanDefinition createBeanDefinition(
 			@Nullable String parentName, @Nullable String className, @Nullable ClassLoader classLoader) throws ClassNotFoundException {
-
+		//优先注入bean属性
 		GenericBeanDefinition bd = new GenericBeanDefinition();
 		bd.setParentName(parentName);
 		if (className != null) {
 			if (classLoader != null) {
+				//传入classLoader同虚拟机一起加载对象
 				bd.setBeanClass(ClassUtils.forName(className, classLoader));
 			}
 			else {
+				//记录className
 				bd.setBeanClassName(className);
 			}
 		}
@@ -104,12 +106,15 @@ public abstract class BeanDefinitionReaderUtils {
 			BeanDefinition definition, BeanDefinitionRegistry registry, boolean isInnerBean)
 			throws BeanDefinitionStoreException {
 
+		//类名
 		String generatedBeanName = definition.getBeanClassName();
 		if (generatedBeanName == null) {
 			if (definition.getParentName() != null) {
+				//rootName+$child
 				generatedBeanName = definition.getParentName() + "$child";
 			}
 			else if (definition.getFactoryBeanName() != null) {
+				//factoryBeanName+$created
 				generatedBeanName = definition.getFactoryBeanName() + "$created";
 			}
 		}

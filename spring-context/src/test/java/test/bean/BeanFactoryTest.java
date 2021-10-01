@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -54,5 +55,12 @@ public class BeanFactoryTest {
 			is = ClassLoader.getSystemResourceAsStream(this.path);
 		}
 		return is;
+	}
+
+	@Test
+	public void testLookup(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("test/bean/look-up.xml");
+		GetBeanTest test = (GetBeanTest) context.getBean("getBeanTest");
+		test.show();
 	}
 }
