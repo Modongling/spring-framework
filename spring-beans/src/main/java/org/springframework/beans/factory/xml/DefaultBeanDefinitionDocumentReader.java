@@ -129,6 +129,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		this.delegate = createDelegate(getReaderContext(), root, parent);
 
 		if (this.delegate.isDefaultNamespace(root)) {
+			//profile属性处理，环境激活属性
 			String profileSpec = root.getAttribute(PROFILE_ATTRIBUTE);
 			if (StringUtils.hasText(profileSpec)) {
 				String[] specifiedProfiles = StringUtils.tokenizeToStringArray(
@@ -144,9 +145,10 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				}
 			}
 		}
-
+		//子类实现处理前解析
 		preProcessXml(root);
 		parseBeanDefinitions(root, this.delegate);
+		//子类实现处理后解析
 		postProcessXml(root);
 
 		this.delegate = parent;
@@ -173,9 +175,13 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				if (node instanceof Element) {
 					Element ele = (Element) node;
 					if (delegate.isDefaultNamespace(ele)) {
+						//处理默认元素
+						//<bean id="test" class="test.TestBean"/>
 						parseDefaultElement(ele, delegate);
 					}
 					else {
+						//处理自定义元素
+						//<tx:annotation-driven>
 						delegate.parseCustomElement(ele);
 					}
 				}

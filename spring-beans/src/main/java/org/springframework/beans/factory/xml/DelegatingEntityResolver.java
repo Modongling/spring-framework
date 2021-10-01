@@ -84,9 +84,11 @@ public class DelegatingEntityResolver implements EntityResolver {
 
 		if (systemId != null) {
 			if (systemId.endsWith(DTD_SUFFIX)) {
+				//dtd
 				return this.dtdResolver.resolveEntity(publicId, systemId);
 			}
 			else if (systemId.endsWith(XSD_SUFFIX)) {
+				//META-INF/Spring.schemas
 				return this.schemaResolver.resolveEntity(publicId, systemId);
 			}
 		}
